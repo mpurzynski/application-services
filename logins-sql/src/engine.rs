@@ -9,8 +9,10 @@ use std::path::Path;
 use serde_json;
 use rusqlite;
 
+// This and PasswordEngine::get_sync_info are public just for integration test cleanup.
+#[doc(hidden)]
 #[derive(Debug)]
-pub(crate) struct SyncInfo {
+pub struct SyncInfo {
     pub state: GlobalState,
     pub client: Sync15StorageClient,
     // Used so that we know whether or not we need to re-initialize `client`
@@ -180,6 +182,11 @@ impl PasswordEngine {
         self.sync = Some(sync_info);
 
         Ok(result?)
+    }
+    // This and SyncInfo are public just for integration test cleanup.
+    #[doc(hidden)]
+    pub fn get_sync_info(&self) -> &Option<SyncInfo> {
+        &self.sync
     }
 }
 
