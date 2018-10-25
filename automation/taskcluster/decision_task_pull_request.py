@@ -11,8 +11,9 @@ from decisionlib import *
 def main(task_for, mock=False):
     if task_for == "github-pull-request":
         # linux_tidy_unit()
-        libs_task = android_libs()
-        android_arm32(libs_task)
+        android_libs_task = android_libs()
+        desktop_libs_task = desktop_libs()
+        android_arm32(android_libs_task)
         # if mock:
         #     linux_wpt()
         #     linux_build_task("Indexed by task definition").find_or_create()
@@ -74,6 +75,20 @@ def android_libs():
             "/build/repo/target.tar.gz",
         )
         .find_or_create("build.android.libs." + CONFIG.git_sha_for_directory("libs"))
+    )
+
+def desktop_libs():
+    return (
+        linux_build_task("Desktop libs (all architectures): build")
+        .with_script("""
+            pushd libs && ./build-all.sh desktop && popd
+            tar -czf /build/repo/target.tar.gz libs/desktop
+        """)
+        # XXX names change: public/bin/mozilla/XXX to public/XXX
+        .with_artifacts(
+            "/build/repo/target.tar.gz",
+        )
+        .find_or_create("build.desktop.libs." + CONFIG.git_sha_for_directory("libs"))
     )
 
 def android_arm32(build_task):
