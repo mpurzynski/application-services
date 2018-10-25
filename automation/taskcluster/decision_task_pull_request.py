@@ -182,7 +182,7 @@ def dockerfile_path(name):
 
 
 def linux_task(name):
-    return DockerWorkerTask(name).with_worker_type("github-worker")
+    return DockerWorkerTask(name).with_worker_type("application-services-r")
 
 
 def linux_build_task(name):
