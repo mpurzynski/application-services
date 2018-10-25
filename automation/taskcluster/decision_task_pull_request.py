@@ -11,7 +11,8 @@ from decisionlib import *
 def main(task_for, mock=False):
     if task_for == "github-pull-request":
         # linux_tidy_unit()
-        android_arm32()
+        libs_task = android_libs()
+        android_arm32(libs_task)
         # if mock:
         #     linux_wpt()
         #     linux_build_task("Indexed by task definition").find_or_create()
@@ -59,13 +60,30 @@ linux_build_env = {
 #     """).create()
 
 
-def android_arm32():
+def android_libs():
+    return (
+        linux_build_task("Android libs (all architectures): build")
+        .with_script("""
+            ./scripts/taskcluster-android.sh
+            tar -czf /repo/target.tar.gz libs/android
+        """)
+        # XXX names change: public/bin/mozilla/XXX to public/XXX
+        .with_artifacts(
+            "/repo/target.tar.gz",
+        )
+        .create()
+        # .find_or_create("build.android_armv7_release." + CONFIG.git_sha)
+    )
+
+def android_arm32(build_task):
     return (
         linux_build_task("Android (all architectures): build")
         # file: NDK parses $(file $SHELL) to tell x64 host from x86
         # wget: servo-media-gstreamer’s build script
+        .with_env(BUILD_TASK_ID=build_task)
+        .with_dependencies(build_task)
         .with_script("""
-            ./scripts/taskcluster-android.sh \
+            ./automation/taskcluster/curl-artifact.sh ${BUILD_TASK_ID} target.tar.gz | tar -xz
             ./gradlew --no-daemon clean :fxa-client-library:assembleRelease :logins-library:assembleRelease
         """)
         # XXX names change: public/bin/mozilla/XXX to public/XXX
