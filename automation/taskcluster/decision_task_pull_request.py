@@ -71,8 +71,7 @@ def android_libs():
         .with_artifacts(
             "/repo/target.tar.gz",
         )
-        .create()
-        # .find_or_create("build.android_armv7_release." + CONFIG.git_sha)
+        .find_or_create("build.android.libs." + CONFIG.git_sha_for_directory("libs"))
     )
 
 def android_arm32(build_task):
