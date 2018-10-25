@@ -60,16 +60,18 @@ linux_build_env = {
 #     """).create()
 
 
+# TODO: work through /repo vs /build/repo
+
 def android_libs():
     return (
         linux_build_task("Android libs (all architectures): build")
         .with_script("""
             ./scripts/taskcluster-android.sh
-            tar -czf /repo/target.tar.gz libs/android
+            tar -czf /build/repo/target.tar.gz libs/android
         """)
         # XXX names change: public/bin/mozilla/XXX to public/XXX
         .with_artifacts(
-            "/repo/target.tar.gz",
+            "/build/repo/target.tar.gz",
         )
         .find_or_create("build.android.libs." + CONFIG.git_sha_for_directory("libs"))
     )
@@ -87,8 +89,8 @@ def android_arm32(build_task):
         """)
         # XXX names change: public/bin/mozilla/XXX to public/XXX
         .with_artifacts(
-            "/repo/fxa-client/sdks/android/library/build/outputs/aar/fxaclient-release.aar",
-            "/repo/logins-api/android/library/build/outputs/aar/logins-release.aar",
+            "/build/repo/fxa-client/sdks/android/library/build/outputs/aar/fxaclient-release.aar",
+            "/build/repo/logins-api/android/library/build/outputs/aar/logins-release.aar",
         )
         .create()
         # .find_or_create("build.android_armv7_release." + CONFIG.git_sha)
@@ -138,7 +140,7 @@ def android_arm32(build_task):
 #     """
 #     # FIXME: --reporter-api default
 #     # IndexError: list index out of range
-#     # File "/repo/python/servo/testing_commands.py", line 533, in filter_intermittents
+#     # File "/build/repo/python/servo/testing_commands.py", line 533, in filter_intermittents
 #     #   pull_request = int(last_merge.split(' ')[4][1:])
 #     if this_chunk == 1:
 #         name += " + extra"
@@ -168,7 +170,7 @@ def android_arm32(build_task):
 #         .with_script(script)
 #         .with_index_and_artifacts_expire_in(log_artifacts_expire_in)
 #         .with_artifacts(*[
-#             "/repo/" + word
+#             "/build/repo/" + word
 #             for word in script.split() if word.endswith(".log")
 #         ])
 #         .with_max_run_time_minutes(60)
