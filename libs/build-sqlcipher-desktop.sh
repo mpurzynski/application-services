@@ -59,14 +59,14 @@ make clean || true
 if [ $(uname -s) == "Darwin" ]; then
   ../configure --prefix="$PWD/install-prefix" \
     --enable-tempstore=yes \
-    CFLAGS="$SQLCIPHER_CFLAGS -I$OPENSSL_DIR/include -L$OPENSSL_DIR/lib" \
+    CFLAGS="${SQLCIPHER_CFLAGS} -I${OPENSSL_DIR}/include -L${OPENSSL_DIR}/lib" \
     LDFLAGS="-lcrypto -lm"
 elif [ $(uname -s) == "Linux" ]; then
   ../configure --prefix="$PWD/install-prefix" \
     --enable-tempstore=yes \
-    CFLAGS="${CFLAGS} ${SQLCIPHER_CFLAGS} -I${OPENSSL_DIR}/include -L${OPENSSL_DIR}/lib" \
+    CFLAGS="${SQLCIPHER_CFLAGS} -I${OPENSSL_DIR}/include -L${OPENSSL_DIR}/lib" \
     LIBS="-ldl -lcrypto -lm" \
-    LDFLAGS="$OPENSSL_DIR/lib/libcrypto.a "
+    LDFLAGS="${OPENSSL_DIR}/lib/libcrypto.a "
 else
    echo "Cannot build SQLcipher on unrecognized host OS $(uname -s)"
    exit 1
