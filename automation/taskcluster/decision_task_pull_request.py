@@ -92,7 +92,7 @@ def desktop_linux_libs():
         .find_or_create("build.libs.desktop.linux." + CONFIG.git_sha_for_directory("libs"))
     )
 
-def desktop_macos():
+def desktop_macos_libs():
     return (
         linux_build_task("Desktop libs (macOS): build")
         .with_script("""
