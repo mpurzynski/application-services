@@ -27,7 +27,7 @@ ls -al
 
 popd
 
-pushd libs
+# pushd libs
 
-./build-all.sh desktop
+# ./build-all.sh desktop
 

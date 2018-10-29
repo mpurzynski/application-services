@@ -60,6 +60,9 @@ then
   ./build-all-android.sh "$OPENSSL_SRC_PATH" "$SQLCIPHER_SRC_PATH"
 elif [ "$PLATFORM" == "desktop" ]
 then
+
+  ./cross-compile-macos-on-linux-desktop-libs.sh
+
   ./build-openssl-desktop.sh "$OPENSSL_SRC_PATH"
   ./build-sqlcipher-desktop.sh "$SQLCIPHER_SRC_PATH" $(abspath "desktop/openssl")
 else
