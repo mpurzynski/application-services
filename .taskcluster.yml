@@ -24,6 +24,7 @@ tasks:
           owner: &task_owner ${event.pull_request.head.user.login}@users.noreply.github.com
           source: &task_source ${event.pull_request.head.repo.url}
         scopes:
+          - "docker-worker:relengapi-proxy:tooltool.download.internal"
           - "queue:create-task:highest:aws-provisioner-v1/application-services-r"
           - "queue:scheduler-id:taskcluster-github"
 
