@@ -12,7 +12,8 @@ def main(task_for, mock=False):
     if task_for == "github-pull-request":
         # linux_tidy_unit()
         android_libs_task = android_libs()
-        desktop_libs_task = desktop_libs()
+        desktop_linux_libs_task = desktop_linux_libs()
+        desktop_macos_libs_task = desktop_macos_libs()
         android_arm32(android_libs_task)
         # if mock:
         #     linux_wpt()
@@ -74,12 +75,12 @@ def android_libs():
         .with_artifacts(
             "/build/repo/target.tar.gz",
         )
-        .find_or_create("build.android.libs." + CONFIG.git_sha_for_directory("libs"))
+        .find_or_create("build.libs.android." + CONFIG.git_sha_for_directory("libs"))
     )
 
-def desktop_libs():
+def desktop_linux_libs():
     return (
-        linux_build_task("Desktop libs (all architectures): build")
+        linux_build_task("Desktop libs (Linux): build")
         .with_script("""
             pushd libs && ./build-all.sh desktop && popd
             tar -czf /build/repo/target.tar.gz libs/desktop
@@ -88,7 +89,21 @@ def desktop_libs():
         .with_artifacts(
             "/build/repo/target.tar.gz",
         )
-        .find_or_create("build.desktop.libs." + CONFIG.git_sha_for_directory("libs"))
+        .find_or_create("build.libs.desktop.linux." + CONFIG.git_sha_for_directory("libs"))
+    )
+
+def desktop_macos():
+    return (
+        linux_build_task("Desktop libs (macOS): build")
+        .with_script("""
+            pushd libs && ./build-all.sh desktop && popd
+            tar -czf /build/repo/target.tar.gz libs/desktop
+        """)
+        # XXX names change: public/bin/mozilla/XXX to public/XXX
+        .with_artifacts(
+            "/build/repo/target.tar.gz",
+        )
+        .find_or_create("build.libs.desktop.macos." + CONFIG.git_sha_for_directory("libs"))
     )
 
 def android_arm32(build_task):
