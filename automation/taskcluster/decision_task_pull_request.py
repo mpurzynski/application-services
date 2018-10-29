@@ -101,7 +101,9 @@ def desktop_macos_libs():
         """)
         # XXX names change: public/bin/mozilla/XXX to public/XXX
         .with_scopes('docker-worker:relengapi-proxy:tooltool.download.internal')
+        .with_scopes('docker-worker:taskcluster-proxy:tooltool.download.internal')
         .with_features('relengAPIProxy')
+        .with_features('taskclusterProxy')
         .with_artifacts(
             "/build/repo/target.tar.gz",
         )
