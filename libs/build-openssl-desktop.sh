@@ -31,7 +31,7 @@ else
   export AR=/tmp/cctools/bin/x86_64-apple-darwin11-ar
   export RANLIB=/tmp/cctools/bin/x86_64-apple-darwin11-ranlib
   ./Configure darwin64-x86_64-cc \
-    no-asm no-shared no-dso \
+    no-asm no-dso shared \
     --with-fipsdir=/tmp \
     -march=x86-64 \
     '-B /tmp/cctools/bin' \
