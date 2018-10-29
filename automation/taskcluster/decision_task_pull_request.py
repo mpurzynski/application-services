@@ -100,6 +100,7 @@ def desktop_macos_libs():
             tar -czf /build/repo/target.tar.gz libs/desktop
         """)
         # XXX names change: public/bin/mozilla/XXX to public/XXX
+        .with_features('taskclusterProxy')
         .with_artifacts(
             "/build/repo/target.tar.gz",
         )
