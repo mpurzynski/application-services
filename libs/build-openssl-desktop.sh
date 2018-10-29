@@ -26,7 +26,7 @@ else
   # in $PATH.  This is all cribbed from
   # https://searchfox.org/mozilla-central/rev/8848b9741fc4ee4e9bc3ae83ea0fc048da39979f/build/macosx/cross-mozconfig.common.
   export PATH=/tmp/clang/bin:/tmp/cctools/bin:$PATH
-  export CC=/tmp/linux64-clang-6/bin/clang
+  export CC=/tmp/clang/bin/clang
   export TOOLCHAIN_PREFIX=/tmp/cctools/bin
   export AR=/tmp/cctools/bin/x86_64-apple-darwin11-ar
   export RANLIB=/tmp/cctools/bin/x86_64-apple-darwin11-ranlib
